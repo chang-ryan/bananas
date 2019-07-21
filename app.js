@@ -43,6 +43,7 @@ bot.on('message', async (message) => {
 
   if (command === 'positions' || command === 'position' || command === 'pos' || command === 'p') {
     // Get all positions out of DB for current guild. Pretty display that shit.
+    return message.channel.send('Positions')
   }
 })
 
