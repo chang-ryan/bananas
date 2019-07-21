@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const Discord = require('discord.js')
 const config = require('./config.json')
 
@@ -24,4 +26,4 @@ bot.on('message', async (message) => {
   }
 })
 
-bot.login(config.token)
+bot.login(process.env.TOKEN)
