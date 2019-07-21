@@ -1,0 +1,16 @@
+{
+  "name": "bananas",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "lint:fix": "standard --fix | snazzy"
+  },
+  "dependencies": {
+    "discord.js": "^11.5.1"
+  },
+  "devDependencies": {
+    "snazzy": "^8.0.0",
+    "standard": "^13.0.2"
+  }
+}
