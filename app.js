@@ -1,9 +1,15 @@
 require('dotenv').config()
 
 const Discord = require('discord.js')
+const Enmap = require('enmap')
 const config = require('./config.json')
 
 const bot = new Discord.Client({})
+const board = new Enmap({ name: 'board' })
+
+const LONG = 'long'
+const SHORT = 'short'
+const FLAT = 'flat'
 
 bot.on('ready', () => {
   console.log(`Logged in as ${bot.user.tag}!`)
@@ -30,24 +36,60 @@ bot.on('message', async (message) => {
   }
 
   if (command === 'enter' || command === 'ent') {
+    const DIRECTIONS = [LONG, SHORT]
+
     const direction = messageContentArray[2]
     const entry = messageContentArray[3]
 
+    if (!direction || !entry) {
+      return message.channel.send('Entry formatted incorrectly. Use `!bananas enter long 9000` to enter your position.')
+    }
+
+    if (!DIRECTIONS.includes(direction.toLowerCase())) {
+      return message.channel.send('Usable directions are `long` and `short`.')
+    }
+
     const position = {
+      name: message.author.username,
       direction,
       entry
     }
 
     console.log(position)
 
+    board.ensure(message.guild.id, {})
+    board.set(message.guild.id, position, message.author.id)
+
     // Store position into DB under the user that sent it.
 
     return message.channel.send(`${message.author.username}, you're position has been entered. May the odds be ever in your favor.`)
   }
 
+  if (command === 'exit' || command === 'ex') {
+    const position = {
+      name: message.author.username,
+      direction: FLAT
+    }
+
+    board.set(message.guild.id, position, message.author.id)
+
+    return message.channel.send(`${message.author.username}, you have exited your position.`)
+  }
+
   if (command === 'positions' || command === 'position' || command === 'pos' || command === 'p') {
-    // Get all positions out of DB for current guild. Pretty display that shit.
-    return message.channel.send('Positions')
+    const positions = board.get(message.guild.id)
+    const messages = Object.keys(positions).map((userId) => {
+      if (positions[userId].direction === FLAT) {
+        return `_${positions[userId].name}_ is ${FLAT} like our planet.`
+      }
+
+      return `_${positions[userId].name}_ is ${positions[userId].direction} from ${positions[userId].entry}.`
+    })
+
+    const response = messages.join('\n')
+
+    console.log(response)
+    return message.channel.send(response)
   }
 })
 

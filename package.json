@@ -8,9 +8,11 @@
     "lint:fix": "standard --fix | snazzy"
   },
   "dependencies": {
+    "better-sqlite-pool": "^0.2.2",
     "common-tags": "^1.8.0",
     "discord.js": "^11.5.1",
-    "dotenv": "^8.0.0"
+    "dotenv": "^8.0.0",
+    "enmap": "^5.0.1"
   },
   "devDependencies": {
     "nodemon": "^1.19.1",
