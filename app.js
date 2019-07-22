@@ -60,8 +60,6 @@ bot.on('message', async (message) => {
     board.ensure(message.guild.id, {})
     board.set(message.guild.id, position, message.author.id)
 
-    // Store position into DB under the user that sent it.
-
     return message.channel.send(`${message.author.username}, you're position has been entered. May the odds be ever in your favor.`)
   }
 
