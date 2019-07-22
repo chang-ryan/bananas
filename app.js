@@ -72,8 +72,6 @@ bot.on('message', async (message) => {
       entry
     }
 
-    console.log(position)
-
     board.ensure(message.guild.id, {})
     board.set(message.guild.id, position, message.author.id)
 
@@ -103,7 +101,6 @@ bot.on('message', async (message) => {
 
     const response = messages.join('\n')
 
-    console.log(response)
     return message.channel.send(response)
   }
 })
