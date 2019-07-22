@@ -6,6 +6,7 @@ const config = require('./config.json')
 const bot = new Discord.Client({})
 
 bot.on('ready', () => {
+  console.log(`Logged in as ${bot.user.tag}!`)
   console.log(`Bot has started, with ${bot.users.size} users, in ${bot.channels.size} channels of ${bot.guilds.size} guilds.`)
 
   bot.user.setActivity(`Serving ${bot.guilds.size} servers.`)
@@ -18,7 +19,10 @@ bot.on('message', async (message) => {
   const prefix = messageContentArray[0]
   const command = messageContentArray[1]
 
-  if (prefix !== config.prefix) return
+  if (!config.prefixes.includes(prefix)) return
+  if (!command) {
+    return message.channel.send('Did you need help? Use `!bananas help` to show what I can do.')
+  }
 
   if (command === 'ping') {
     const m = await message.channel.send('Ping?')
