@@ -1,8 +1,8 @@
-require('dotenv').config()
-
-const Discord = require('discord.js')
-const Enmap = require('enmap')
-const config = require('./config.json')
+import Discord from 'discord.js'
+import Enmap from 'enmap'
+import { stripIndent } from 'common-tags'
+import 'dotenv/config'
+import config from './config.json'
 
 const bot = new Discord.Client({})
 const board = new Enmap({ name: 'board' })
@@ -33,6 +33,23 @@ bot.on('message', async (message) => {
   if (command === 'ping') {
     const m = await message.channel.send('Ping?')
     return m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(bot.ping)}ms.`)
+  }
+
+  if (command === 'help' || command === 'h') {
+    return message.channel.send(stripIndent`
+      Howdy. This bot's prefix is \`!bananas\` or \`!bnns\`.
+
+      Commands you can use:
+
+      Enter: log yourself into a position.
+        \`enter\`, \`ent\`: \`!bananas enter <direction> <entry>\`, i.e. \`!bananas enter long 10000\`
+
+      Exit: remove yourself from a position.
+        \`exit\`, \`ex\`: \`!bananas exit\`
+
+      Positions: show all positions from your friends.
+        \`positions\`, \`position\`, \`pos\`, \`p\`: \`!bananas positions\`
+    `)
   }
 
   if (command === 'enter' || command === 'ent') {
