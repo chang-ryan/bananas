@@ -1,7 +1,10 @@
+import 'dotenv/config'
+
 import Discord from 'discord.js'
 import Enmap from 'enmap'
+import axios from 'axios'
 import { stripIndent } from 'common-tags'
-import 'dotenv/config'
+import { get } from 'lodash'
 import config from './config.json'
 
 const bot = new Discord.Client({})
@@ -59,7 +62,7 @@ bot.on('message', async (message) => {
     const entry = messageContentArray[3]
 
     if (!direction || !entry) {
-      return message.channel.send('Entry formatted incorrectly. Use `!bananas enter long 9000` to enter your position.')
+      return message.channel.send('Entry formatted incorrectly. Use `!bananas enter <direction> <entry>` to enter your position.')
     }
 
     if (!DIRECTIONS.includes(direction.toLowerCase())) {
@@ -69,13 +72,14 @@ bot.on('message', async (message) => {
     const position = {
       name: message.author.username,
       direction,
-      entry
+      entry,
+      position: `${direction === SHORT ? '-' : ''}${entry}`
     }
 
     board.ensure(message.guild.id, {})
     board.set(message.guild.id, position, message.author.id)
 
-    return message.channel.send(`${message.author.username}, you're position has been entered. May the odds be ever in your favor.`)
+    return message.channel.send(`_${message.author.username}_, you're position has been entered. May the odds be ever in your favor.`)
   }
 
   if (command === 'exit' || command === 'ex') {
@@ -90,14 +94,36 @@ bot.on('message', async (message) => {
   }
 
   if (command === 'positions' || command === 'position' || command === 'pos' || command === 'p') {
+    const bitcoinPriceIndexResponse = await axios.get('https://api.coindesk.com/v1/bpi/currentprice.json')
+    let bitcoinPriceIndex = get(bitcoinPriceIndexResponse, 'data.bpi.USD.rate')
+
+    if (bitcoinPriceIndex) {
+      bitcoinPriceIndex = Number(bitcoinPriceIndex.replace(',', '')).toFixed(2)
+    }
+
     const positions = board.get(message.guild.id)
     const messages = Object.keys(positions).map((userId) => {
-      if (positions[userId].direction === FLAT) {
-        return `_${positions[userId].name}_ is ${FLAT} like our planet.`
+      const { name, direction, entry } = positions[userId]
+
+      if (direction === FLAT) {
+        return `_${name}_ is ${FLAT} like our planet.`
       }
 
-      return `_${positions[userId].name}_ is ${positions[userId].direction} from ${positions[userId].entry}.`
+      let openPnl
+
+      if (direction === LONG) openPnl = bitcoinPriceIndex - Number(entry)
+      if (direction === SHORT) openPnl = Number(entry) - bitcoinPriceIndex
+
+      if (bitcoinPriceIndex) {
+        return `_${name}_ is ${direction} from ${entry} for an open PNL of ${openPnl.toFixed(2)} points.`
+      }
+
+      return `_${name}_ is ${direction} from ${entry}.`
     })
+
+    if (bitcoinPriceIndex) {
+      messages.unshift(`\`BTCUSD ${bitcoinPriceIndex}\`\n`)
+    }
 
     const response = messages.join('\n')
 
