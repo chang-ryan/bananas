@@ -110,15 +110,22 @@ bot.on('message', async (message) => {
       }
 
       let openPnl
+      let directionIcon
 
-      if (direction === LONG) openPnl = bitcoinPriceIndex - Number(entry)
-      if (direction === SHORT) openPnl = Number(entry) - bitcoinPriceIndex
-
-      if (bitcoinPriceIndex) {
-        return `_${name}_ is ${direction} from ${entry} for an open PNL of ${openPnl.toFixed(2)} points.`
+      if (direction === LONG) {
+        openPnl = bitcoinPriceIndex - Number(entry)
+        directionIcon = '🚀'
+      }
+      if (direction === SHORT) {
+        openPnl = Number(entry) - bitcoinPriceIndex
+        directionIcon = '💩'
       }
 
-      return `_${name}_ is ${direction} from ${entry}.`
+      if (bitcoinPriceIndex) {
+        return `${directionIcon} _${name}_ is ${direction} from ${entry} for an open PNL of ${openPnl.toFixed(2)} points.`
+      }
+
+      return `${directionIcon} _${name}_ is ${direction} from ${entry}.`
     })
 
     if (bitcoinPriceIndex) {
