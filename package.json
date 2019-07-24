@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon --exec babel-node app.js",
     "build": "rimraf build && babel src --out-dir build",
-    "start": "yarn build && node build/app.js",
+    "start": "yarn build && forever build/app.js",
     "lint:fix": "standard --fix | snazzy"
   },
   "dependencies": {
