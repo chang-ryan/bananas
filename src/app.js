@@ -1,4 +1,6 @@
 import 'dotenv/config'
+import 'core-js/stable'
+import 'regenerator-runtime/runtime'
 
 import Discord from 'discord.js'
 import Enmap from 'enmap'
