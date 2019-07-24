@@ -1,4 +1,4 @@
 {
-  "token"  : "token",
-  "prefix" : "!bananas"
+  "prefix": "!bananas",
+  "prefixes" : ["!bananas", "!bnns"]
 }
