@@ -6,7 +6,7 @@ import Discord from 'discord.js'
 import Enmap from 'enmap'
 import axios from 'axios'
 import { stripIndent } from 'common-tags'
-import { get } from 'lodash'
+import { get, isEmpty } from 'lodash'
 import { LONG, SHORT, FLAT, PREFIXES } from './constants'
 
 const bot = new Discord.Client({})
@@ -100,6 +100,11 @@ bot.on('message', async (message) => {
     }
 
     const positions = board.get(message.guild.id)
+
+    if (isEmpty(positions)) {
+      return message.channel.send('No positions assigned. Use `!bananas help` to find out how!')
+    }
+
     const messages = Object.keys(positions).map((userId) => {
       const { name, direction, entry } = positions[userId]
 
