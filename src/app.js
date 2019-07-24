@@ -5,14 +5,10 @@ import Enmap from 'enmap'
 import axios from 'axios'
 import { stripIndent } from 'common-tags'
 import { get } from 'lodash'
-import config from './config.json'
+import { LONG, SHORT, FLAT, PREFIXES } from './constants'
 
 const bot = new Discord.Client({})
 const board = new Enmap({ name: 'board' })
-
-const LONG = 'long'
-const SHORT = 'short'
-const FLAT = 'flat'
 
 bot.on('ready', () => {
   console.log(`Logged in as ${bot.user.tag}!`)
@@ -28,7 +24,7 @@ bot.on('message', async (message) => {
   const prefix = messageContentArray[0]
   const command = messageContentArray[1]
 
-  if (!config.prefixes.includes(prefix)) return
+  if (!PREFIXES.includes(prefix)) return
   if (!command) {
     return message.channel.send('Did you need help? Use `!bananas help` to show what I can do.')
   }
