@@ -77,7 +77,7 @@ bot.on('message', async (message) => {
     board.ensure(message.guild.id, {})
     board.set(message.guild.id, position, message.author.id)
 
-    return message.channel.send(`_${message.author.username}_, you're position has been entered. May the odds be ever in your favor.`)
+    return message.channel.send(`_${message.author.username}_, your position has been entered. May the odds be ever in your favor.`)
   }
 
   if (command === 'exit' || command === 'ex') {
