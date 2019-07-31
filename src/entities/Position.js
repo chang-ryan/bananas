@@ -6,20 +6,20 @@ export class Position extends BaseEntity {
   id = undefined
 
   @Column('text')
-  discordGuildId = ''
+  discord_guild_id = ''
 
   @Column('text')
-  discordChannelId = ''
+  discord_channel_id = ''
 
   @Column('text')
-  discordUserId = ''
+  discord_user_id = ''
 
   @Column('text')
-  discordUsername = ''
+  discord_username = ''
 
   @Column('text')
-  position = ''
+  direction = ''
 
   @Column('text')
-  entry = ''
+  entry_price = ''
 }

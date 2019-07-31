@@ -25,6 +25,7 @@ const connection = createConnection({
 })
   .then(async connection => {
     const foo = await connection.getRepository(Position).findOne(1)
+    console.log(foo)
 
     bot.on('ready', () => {
       console.log(`Logged in as ${bot.user.tag}!`)
