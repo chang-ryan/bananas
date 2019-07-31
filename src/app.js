@@ -101,12 +101,14 @@ async function main () {
         )
       }
 
-      const position = {
-        name: message.author.username,
-        direction,
-        entry,
-        position: `${direction === SHORT ? '-' : ''}${entry}`
-      }
+      const position = new Position()
+      position.discord_username = message.author.username
+      position.discord_guild_id = message.guild.id
+      position.discord_channel_id = message.channel.id
+      position.discord_user_id = message.author.id
+      position.direction = direction
+      position.entry_price = entry
+      await position.save()
 
       return message.channel.send(
         `_${message.author.username}_, your position has been entered. May the odds be ever in your favor.`
