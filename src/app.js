@@ -3,7 +3,6 @@ import 'core-js/stable'
 import 'regenerator-runtime/runtime'
 
 import Discord from 'discord.js'
-import Enmap from 'enmap'
 import axios from 'axios'
 import { stripIndent } from 'common-tags'
 import { get, isEmpty } from 'lodash'
@@ -11,9 +10,10 @@ import { createConnection } from 'typeorm'
 import { LONG, SHORT, FLAT, PREFIXES } from './constants'
 import { Position } from './entities'
 
+const path = require('path')
+
 async function main () {
   const bot = new Discord.Client({})
-  const board = new Enmap({ name: 'board' })
 
   await createConnection({
     type: 'postgres',
@@ -22,7 +22,7 @@ async function main () {
     username: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,
     database: process.env.POSTGRES_DATABASE,
-    entities: [__dirname + '/entities/*.js']
+    entities: [path.join(__dirname, '/entities/*.js')]
   })
 
   const position = await Position.findOne(1)
@@ -108,9 +108,6 @@ async function main () {
         position: `${direction === SHORT ? '-' : ''}${entry}`
       }
 
-      board.ensure(message.guild.id, {})
-      board.set(message.guild.id, position, message.author.id)
-
       return message.channel.send(
         `_${message.author.username}_, your position has been entered. May the odds be ever in your favor.`
       )
@@ -121,8 +118,6 @@ async function main () {
         name: message.author.username,
         direction: FLAT
       }
-
-      board.set(message.guild.id, position, message.author.id)
 
       return message.channel.send(
         `${message.author.username}, you have exited your position.`
@@ -148,8 +143,6 @@ async function main () {
           bitcoinPriceIndex.replace(',', '')
         ).toFixed(2)
       }
-
-      const positions = board.get(message.guild.id)
 
       if (isEmpty(positions)) {
         return message.channel.send(

@@ -963,14 +963,6 @@ base@^0.11.1:
     mixin-deep "^1.2.0"
     pascalcase "^0.1.1"
 
-better-sqlite3@^5.4.1:
-  version "5.4.1"
-  resolved "https://registry.yarnpkg.com/better-sqlite3/-/better-sqlite3-5.4.1.tgz#13412a61ac01f2fe20091e6b1c4281e1e19149e2"
-  integrity sha512-uFIjBdnSbzZT8NEqgH1IuARJaA4wtbJ2VmM/ibxlkY+9a0Z8dlyJZBBeKTg2l8L8fPvfpXearuZbjtr+5x8MiA==
-  dependencies:
-    integer "^2.1.0"
-    tar "^4.4.6"
-
 binary-extensions@^1.0.0:
   version "1.13.1"
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.13.1.tgz#598afe54755b2868a5330d2aff9d4ebb53209b65"
@@ -1615,13 +1607,6 @@ emoji-regex@^7.0.1:
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-7.0.3.tgz#933a04052860c85e83c122479c4748a8e4c72156"
   integrity sha512-CwBLREIQ7LvYFB0WyRvwhq5N5qPhc6PMjD6bYggFlI5YyDgl+0vxq5VHbMOFqLg7hfWzmu8T5Z1QofhmTIhItA==
-
-enmap@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/enmap/-/enmap-5.1.0.tgz#f65e5d1fa482bcccd16236ebaf113f99ee159ae3"
-  integrity sha512-zZ4UuSu/3xRR/PTdYvjvFWkizT8qFOKNlxJO+Zj95f4emiXq5PolCtlLr/AijsmfaFfDcsotVjubkFf/H7unFg==
-  dependencies:
-    lodash "^4.17.11"
 
 error-ex@^1.2.0, error-ex@^1.3.1:
   version "1.3.2"
@@ -2491,11 +2476,6 @@ inquirer@^6.2.2, inquirer@^6.4.1:
     string-width "^2.1.0"
     strip-ansi "^5.1.0"
     through "^2.3.6"
-
-integer@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/integer/-/integer-2.1.0.tgz#29134ea2f7ba3362ed4dbe6bcca992b1f18ff276"
-  integrity sha512-vBtiSgrEiNocWvvZX1RVfeOKa2mCHLZQ2p9nkQkQZ/BvEiY+6CcUz0eyjvIiewjJoeNidzg2I+tpPJvpyspL1w==
 
 invariant@^2.2.2:
   version "2.2.4"
@@ -3778,11 +3758,6 @@ preserve@^0.2.0:
   resolved "https://registry.yarnpkg.com/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
   integrity sha1-gV7R9uvGWSb4ZbMQwHE7yzMVzks=
 
-prettier@^1.18.2:
-  version "1.18.2"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.18.2.tgz#6823e7c5900017b4bd3acf46fe9ac4b4d7bda9ea"
-  integrity sha512-OeHeMc0JhFE9idD4ZdtNibzY0+TPHSpSSb9h8FqtP+YnoZZ1sl8Vc9b1sasjfymH3SonAF4QcA2+mzHPhMvIiw==
-
 prettyjson@^1.1.2:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/prettyjson/-/prettyjson-1.2.1.tgz#fcffab41d19cab4dfae5e575e64246619b12d289"
@@ -4518,7 +4493,7 @@ tape@~2.3.2:
     resumer "~0.0.0"
     through "~2.3.4"
 
-tar@^4, tar@^4.4.6:
+tar@^4:
   version "4.4.10"
   resolved "https://registry.yarnpkg.com/tar/-/tar-4.4.10.tgz#946b2810b9a5e0b26140cf78bea6b0b0d689eba1"
   integrity sha512-g2SVs5QIxvo6OLp0GudTqEf05maawKUxXru104iaayWA09551tFCTI8f1Asb4lPfkBr91k07iL4c11XO3/b0tA==
