@@ -6,6 +6,7 @@ CREATE TABLE bananas.position (
   discord_channel_id TEXT,
   discord_user_id    TEXT,
   discord_username   TEXT,
-  position           TEXT,
-  entry              INT
+  direction          TEXT,
+  entry_price        INT,
+  UNIQUE(discord_guild_id, discord_channel_id, discord_user_id)
 );
