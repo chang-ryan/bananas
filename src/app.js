@@ -25,9 +25,6 @@ async function main () {
     entities: [path.join(__dirname, '/entities/*.js')]
   })
 
-  const position = await Position.findOne(1)
-  console.log(position)
-
   bot.on('ready', () => {
     console.log(`Logged in as ${bot.user.tag}!`)
     console.log(
@@ -54,10 +51,6 @@ async function main () {
     if (command === 'ping') {
       const m = await message.channel.send('Ping?')
 
-      const position = await Position.find({ id: 1 })
-
-      console.log(position)
-
       return m.edit(
         `Pong! Latency is ${m.createdTimestamp -
           message.createdTimestamp}ms. API Latency is ${Math.round(
@@ -83,6 +76,10 @@ async function main () {
       `)
     }
 
+    /**
+     *  `enter`
+     *  ENTER A POSITION
+     */
     if (command === 'enter' || command === 'ent') {
       const DIRECTIONS = [LONG, SHORT]
 
@@ -101,40 +98,61 @@ async function main () {
         )
       }
 
-      const position = new Position()
-      position.discord_username = message.author.username
-      position.discord_guild_id = message.guild.id
-      position.discord_channel_id = message.channel.id
-      position.discord_user_id = message.author.id
+      const m = await message.channel.send('Entering your position...')
+
+      const position = await Position.findOrCreateBy({
+        discordGuildId: message.guild.id,
+        discordChannelId: message.channel.id,
+        discordUserId: message.author.id
+      })
+
       position.direction = direction
       position.entry_price = entry
       await position.save()
 
-      return message.channel.send(
+      return m.edit(
         `_${message.author.username}_, your position has been entered. May the odds be ever in your favor.`
       )
     }
 
+    /**
+     *  `exit`
+     *  EXIT A POSITION
+     */
     if (command === 'exit' || command === 'ex') {
-      const position = {
-        name: message.author.username,
-        direction: FLAT
-      }
+      const m = await message.channel.send('Exiting...')
 
-      return message.channel.send(
+      const position = await Position.findOrCreateBy({
+        discordGuildId: message.guild.id,
+        discordChannelId: message.channel.id,
+        discordUserId: message.author.id
+      })
+
+      position.entry_price = null
+      position.direction = FLAT
+      await position.save()
+
+      return m.edit(
         `${message.author.username}, you have exited your position.`
       )
     }
 
+    /**
+     *  `positions`
+     *  LIST ALL POSITIONS FOR A CHANNEL
+     */
     if (
       command === 'positions' ||
       command === 'position' ||
       command === 'pos' ||
       command === 'p'
     ) {
+      const m = await message.channel.send('Loading positions...')
+
       const bitcoinPriceIndexResponse = await axios.get(
         'https://api.coindesk.com/v1/bpi/currentprice.json'
       )
+
       let bitcoinPriceIndex = get(
         bitcoinPriceIndexResponse,
         'data.bpi.USD.rate'
@@ -146,14 +164,19 @@ async function main () {
         ).toFixed(2)
       }
 
+      const positions = await Position.createQueryBuilder()
+        .where('discord_guild_id = :discordGuildId', { discordGuildId: message.guild.id })
+        .andWhere('discord_channel_id = :discordChannelId', { discordChannelId: message.channel.id })
+        .getMany()
+
       if (isEmpty(positions)) {
         return message.channel.send(
           'No positions assigned. Use `!bananas help` to find out how!'
         )
       }
 
-      const messages = Object.keys(positions).map(userId => {
-        const { name, direction, entry } = positions[userId]
+      const messages = positions.map((position) => {
+        const { discord_username: name, direction, entry_price: entry } = position
 
         if (direction === FLAT) {
           return `_${name}_ is ${FLAT} like our planet.`
@@ -186,7 +209,7 @@ async function main () {
 
       const response = messages.join('\n')
 
-      return message.channel.send(response)
+      return m.edit(response)
     }
   })
 
