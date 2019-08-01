@@ -92,6 +92,10 @@ async function main () {
         )
       }
 
+      if (!Number(entry)) {
+        return message.channel.send('Entry must be a whole integer (i.e. `420`).')
+      }
+
       if (!DIRECTIONS.includes(direction.toLowerCase())) {
         return message.channel.send(
           'Usable directions are `long` and `short`.'
