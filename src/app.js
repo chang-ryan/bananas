@@ -176,7 +176,7 @@ async function main () {
         .getMany()
 
       if (isEmpty(positions)) {
-        return message.channel.send(
+        return m.edit(
           'No positions assigned. Use `!bananas help` to find out how!'
         )
       }
