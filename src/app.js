@@ -107,7 +107,8 @@ async function main () {
       const position = await Position.findOrCreateBy({
         discordGuildId: message.guild.id,
         discordChannelId: message.channel.id,
-        discordUserId: message.author.id
+        discordUserId: message.author.id,
+        discordUsername: message.author.username
       })
 
       position.direction = direction
@@ -129,7 +130,8 @@ async function main () {
       const position = await Position.findOrCreateBy({
         discordGuildId: message.guild.id,
         discordChannelId: message.channel.id,
-        discordUserId: message.author.id
+        discordUserId: message.author.id,
+        discordUsername: message.author.username
       })
 
       position.entry_price = null

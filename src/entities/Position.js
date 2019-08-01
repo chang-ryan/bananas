@@ -21,21 +21,25 @@ export class Position extends BaseEntity {
   direction = ''
 
   @Column('text')
-  entry_price = ''
+  entry_price = undefined
 
-  static async findOrCreateBy({ discordGuildId, discordChannelId, discordUserId }) {
+  static async findOrCreateBy({
+    discordGuildId, discordChannelId, discordUserId, discordUsername
+  }) {
     const existingPosition = await this.findOne({
       discord_guild_id: discordGuildId,
       discord_channel_id: discordChannelId,
-      discord_user_id: discordUserId
+      discord_user_id: discordUserId,
+      discord_user_name: discordUsername
     })
 
     if (existingPosition) { return existingPosition }
 
-    const newPosition = this.constructor()
+    const newPosition = new Position()
     newPosition.discord_guild_id = discordGuildId
     newPosition.discord_channel_id = discordChannelId
     newPosition.discord_user_id = discordUserId
+    newPosition.discord_username = discordUsername
 
     return newPosition.save()
   }
