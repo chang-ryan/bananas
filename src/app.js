@@ -84,7 +84,7 @@ async function main () {
       const DIRECTIONS = [LONG, SHORT]
 
       const direction = messageContentArray[2]
-      const entry = messageContentArray[3]
+      const entry = Math.round(Number(messageContentArray[3]))
 
       if (!direction || !entry) {
         return message.channel.send(
