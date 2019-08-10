@@ -61,7 +61,7 @@ async function main () {
 
     if (command === 'help' || command === 'h') {
       return message.channel.send(stripIndent`
-        Howdy. This bot's prefix is \`!bananas\` or \`!bnns\`.
+        Howdy. This bot's prefix is \`!bananas\` or \`!bnns\` or \`!b\`.
 
         Commands you can use:
 
